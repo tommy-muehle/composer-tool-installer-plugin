@@ -1,4 +1,3 @@
-
 <?php
 
 namespace Tooly\Composer\Installer\Decision;
