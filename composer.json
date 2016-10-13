@@ -1,0 +1,47 @@
+{
+    "name": "tooly/composer-plugin",
+    "type": "composer-plugin",
+    "description": "An awesome description.",
+    "keywords": [
+        "key",
+        "word"
+    ],
+    "homepage": "https://github.com/tommy-muehle/new-project",
+    "authors": [
+        {
+            "name": "Tommy Muehle",
+            "email": "tommy.muehle@gmail.com",
+            "homepage": "https://tommy-muehle.de"
+        }
+    ],
+    "support": {
+        "email": "tommy.muehle@gmail.com",
+        "issues": "https://github.com/tommy-muehle/new-project/issues",
+        "docs": "https://github.com/tommy-muehle/new-project/blob/master/README.md",
+        "source": "https://github.com/tommy-muehle/new-project/tree/master"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "New\\Project\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tooly\\Composer\\": "src/",
+            "Tooly\\Composer\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": ">=5.6.0",
+        "composer-plugin-api": "^1.0"
+    },
+    "require-dev": {
+        "composer/composer": "^1.0"
+    },
+    "extra": {
+        "class": "Tooly\\Composer\\Plugin",
+        "tools": [
+        ]
+    }
+}

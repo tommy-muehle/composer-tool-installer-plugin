@@ -1,0 +1,22 @@
+[color]
+    ui = true
+
+[color "status"]
+    added = yellow
+    changed = green
+    untracked = red
+
+[diff]
+    mnemonicprefix = true
+
+[commit]
+    gpgsign = true
+
+[user]
+    name = Tommy Muehle
+    email = tommy.muehle@gmail.com
+    signingkey = 9BA742C3
+
+[alias]
+    amend = commit -S --amend
+    commit = commit -S
