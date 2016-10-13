@@ -23,7 +23,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "New\\Project\\": "src/"
+            "Tooly\\Composer\\": "src/"
         }
     },
     "autoload-dev": {
