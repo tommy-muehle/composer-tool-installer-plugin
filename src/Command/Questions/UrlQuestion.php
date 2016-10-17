@@ -1,8 +1,8 @@
 <?php
 
-namespace Tooly\Composer\Generator\Questions;
+namespace ToolInstaller\Composer\Command\Questions;
 
-use Tooly\Composer\Generator\Autocomplete\UrlSuggester;
+use ToolInstaller\Composer\Command\Autocomplete\UrlSuggester;
 
 class UrlQuestion extends AbstractQuestion
 {
@@ -15,7 +15,7 @@ class UrlQuestion extends AbstractQuestion
     {
         $this->suggester = new UrlSuggester;
 
-        parent::__construct('Url:');
+        parent::__construct('Url: ');
     }
 
     /**
@@ -23,7 +23,7 @@ class UrlQuestion extends AbstractQuestion
      */
     public function getAutocompleterValues()
     {
-        return $this->suggester->all();
+        return $this->getSuggester()->all();
     }
 
     /**

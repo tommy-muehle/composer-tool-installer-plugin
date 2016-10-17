@@ -1,13 +1,12 @@
 <?php
 
-namespace Tooly\Composer;
+namespace ToolInstaller\Composer\Installer;
 
 use Composer\Script\Event;
-use Tooly\Composer\Installer\Helper;
-use Tooly\Composer\Installer\Configuration;
-use Tooly\Composer\Installer\Decider;
-use Tooly\Composer\Installer\Mode;
-use Tooly\Composer\Model\Tool;
+use ToolInstaller\Composer\Installer\Helper;
+use ToolInstaller\Composer\Installer\Configuration;
+use ToolInstaller\Composer\Installer\Decider;
+use ToolInstaller\Composer\Model\Tool;
 
 class Installer
 {
@@ -36,35 +35,56 @@ class Installer
      */
     public function __construct(Event $event)
     {
-        $mode = new Mode;
+        $configuration = new Configuration($event->getComposer());
+        $io = $event->getIO();
 
         if (false === $event->isDevMode()) {
-            $mode->setNoDev();
+            $configuration->setNoDev();
         }
 
-        if (false === $event->getIO()->isInteractive()) {
-            $mode->setNonInteractive();
+        if (false === $io->isInteractive()) {
+            $configuration->setNonInteractive();
         }
 
-        $this->configuration  = new Configuration($event->getComposer(), $mode);
+        $this->configuration  = $configuration;
+        $this->io = $io;
         $this->helper = new Helper;
-        $this->io = $event->getIO();
-        $this->decider = new Decider($this->configuration, $this->helper, $this->io);
+        $this->decider = new Decider($this->configuration, $this->helper);
     }
 
+    /**
+     * @todo Documentation
+     */
+    public function prepare()
+    {
+        if (false === is_dir($this->configuration->getBinDirectory())) {
+            mkdir($this->configuration->getBinDirectory());
+        }
+
+        return $this;
+    }
+
+    /**
+     * @todo Documentation
+     */
     public function cleanUp()
     {
-        $this->removeFromDir(
+        $this->helper->getFilesystem()->removeFromDir(
             $this->configuration->getComposerBinDirectory()
         );
 
-        $this->removeFromDir(
+        $this->helper->getFilesystem()->removeFromDir(
             $this->configuration->getBinDirectory(),
             array_keys($this->configuration->getTools())
         );
+
+        return $this;
     }
 
-    public function process()
+    /**
+     * @todo Documentation
+     */
+    public function download()
     {
         /* @var $tool Tool */
         foreach ($this->configuration->getTools() as $tool) {
@@ -80,14 +100,15 @@ class Installer
             $filename = $tool->getFilename();
 
             $this->helper->getFilesystem()->createFile($filename, $data);
-
-            $this->io->write(sprintf(
-                '<info>File "%s" successfully downloaded!</info>',
-                basename($filename)
-            ));
+            $this->io->write(sprintf('<info>File "%s" successfully downloaded!</info>', basename($filename)));
         }
+
+        return $this;
     }
 
+    /**
+     * @todo Documentation
+     */
     public function symlink()
     {
         /* @var $tool Tool */
@@ -103,26 +124,7 @@ class Installer
 
             $this->helper->getFilesystem()->symlinkFile($filename, $composerPath);
         }
-    }
 
-    /**
-     * @param string $dir
-     * @param array  $excludeToolNames
-     */
-    private function removeFromDir($dir, array $excludeToolNames = [])
-    {
-        foreach (scandir($dir) as $entry) {
-            $path = $dir . DIRECTORY_SEPARATOR . $entry;
-
-            if (false === strpos($path, '.phar')) {
-                continue;
-            }
-
-            if (true === in_array(basename($entry, '.phar'), $excludeToolNames)) {
-                continue;
-            }
-
-            $this->helper->getFilesystem()->remove($path);
-        }
+        return $this;
     }
 }

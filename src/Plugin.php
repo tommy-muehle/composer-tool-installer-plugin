@@ -1,6 +1,6 @@
 <?php
 
-namespace Tooly\Composer;
+namespace ToolInstaller\Composer;
 
 use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
@@ -10,7 +10,9 @@ use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
 use Composer\Plugin\Capability\CommandProvider as CommandProviderCapability;
-use Tooly\Composer\Generator\Command\RequireCommand;
+use ToolInstaller\Composer\Command\InstallCommand;
+use ToolInstaller\Composer\Command\ShowCommand;
+use ToolInstaller\Composer\Installer\Installer;
 
 class Plugin implements PluginInterface, Capable, EventSubscriberInterface, CommandProviderCapability
 {
@@ -38,7 +40,8 @@ class Plugin implements PluginInterface, Capable, EventSubscriberInterface, Comm
     public function getCommands()
     {
         return [
-            new RequireCommand,
+            new InstallCommand,
+            new ShowCommand,
         ];
     }
 
@@ -59,9 +62,10 @@ class Plugin implements PluginInterface, Capable, EventSubscriberInterface, Comm
     public function install(Event $event)
     {
         $installer = new Installer($event);
-
-        $installer->cleanUp();
-        $installer->process();
-        $installer->symlink();
+        $installer
+            ->prepare()
+            ->cleanUp()
+            ->download()
+            ->symlink();
     }
 }

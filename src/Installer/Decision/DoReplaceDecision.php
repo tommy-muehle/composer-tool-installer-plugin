@@ -1,14 +1,14 @@
 <?php
 
-namespace Tooly\Composer\Installer\Decision;
+namespace ToolInstaller\Composer\Installer\Decision;
 
 use Composer\IO\IOInterface;
-use Tooly\Composer\Model\Tool;
-use Tooly\Composer\Installer\Configuration;
-use Tooly\Composer\Installer\Helper;
+use ToolInstaller\Composer\Model\Tool;
+use ToolInstaller\Composer\Installer\Configuration;
+use ToolInstaller\Composer\Installer\Helper;
 
 /**
- * @package Tooly\Script\Decision
+ * @package ToolInstaller\Script\Decision
  */
 class DoReplaceDecision extends AbstractDecision
 {
@@ -20,11 +20,10 @@ class DoReplaceDecision extends AbstractDecision
     /**
      * @param Configuration $configuration
      * @param Helper        $helper
-     * @param IOInterface   $io
      */
-    public function __construct(Configuration $configuration, Helper $helper, IOInterface $io)
+    public function __construct(Configuration $configuration, Helper $helper)
     {
-        $this->io = $io;
+        $this->io = $helper->getIO();
 
         parent::__construct($configuration, $helper);
     }

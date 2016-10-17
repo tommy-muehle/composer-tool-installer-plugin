@@ -1,8 +1,8 @@
 <?php
 
-namespace Tooly\Composer\Generator\Questions;
+namespace ToolInstaller\Composer\Command\Questions;
 
-use Tooly\Composer\Generator\Autocomplete\SuggesterInterface;
+use ToolInstaller\Composer\Command\Autocomplete\SuggesterInterface;
 use Symfony\Component\Console\Question\Question;
 
 abstract class AbstractQuestion extends Question

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tooly\Composer\Installer\Decision;
+namespace ToolInstaller\Composer\Installer\Decision;
 
 class Result
 {

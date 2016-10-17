@@ -1,13 +1,13 @@
 <?php
 
-namespace Tooly\Composer\Installer\Decision;
+namespace ToolInstaller\Composer\Installer\Decision;
 
-use Tooly\Composer\Installer\Configuration;
-use Tooly\Composer\Installer\Decision\DecisionInterface;
-use Tooly\Composer\Installer\Helper;
+use ToolInstaller\Composer\Installer\Configuration;
+use ToolInstaller\Composer\Installer\Decision\DecisionInterface;
+use ToolInstaller\Composer\Installer\Helper;
 
 /**
- * @package Tooly\Script\Decision
+ * @package ToolInstaller\Script\Decision
  */
 abstract class AbstractDecision implements DecisionInterface
 {

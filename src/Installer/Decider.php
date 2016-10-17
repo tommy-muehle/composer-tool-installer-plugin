@@ -1,15 +1,15 @@
 <?php
 
-namespace Tooly\Composer\Installer;
+namespace ToolInstaller\Composer\Installer;
 
 use Composer\IO\IOInterface;
-use Tooly\Composer\Installer\Decision\DoReplaceDecision;
-use Tooly\Composer\Installer\Decision\FileAlreadyExistDecision;
-use Tooly\Composer\Installer\Decision\IsAccessibleDecision;
-use Tooly\Composer\Installer\Decision\IsVerifiedDecision;
-use Tooly\Composer\Installer\Decision\OnlyDevDecision;
-use Tooly\Composer\Installer\Decision\Result;
-use Tooly\Composer\Model\Tool;
+use ToolInstaller\Composer\Installer\Decision\DoReplaceDecision;
+use ToolInstaller\Composer\Installer\Decision\FileAlreadyExistDecision;
+use ToolInstaller\Composer\Installer\Decision\IsAccessibleDecision;
+use ToolInstaller\Composer\Installer\Decision\IsVerifiedDecision;
+use ToolInstaller\Composer\Installer\Decision\OnlyDevDecision;
+use ToolInstaller\Composer\Installer\Decision\Result;
+use ToolInstaller\Composer\Model\Tool;
 
 class Decider
 {
@@ -24,20 +24,13 @@ class Decider
     private $helper;
 
     /**
-     * @var IOInterface
-     */
-    private $io;
-
-    /**
      * @param Configuration $configuration
      * @param Helper        $helper
-     * @param IOInterface   $io
      */
-    public function __construct(Configuration $configuration, Helper $helper, IOInterface $io)
+    public function __construct(Configuration $configuration, Helper $helper)
     {
         $this->configuration = $configuration;
         $this->helper = $helper;
-        $this->io = $io;
     }
 
     /**
@@ -75,7 +68,7 @@ class Decider
             new IsAccessibleDecision($this->configuration, $this->helper),
             new FileAlreadyExistDecision($this->configuration, $this->helper),
             new IsVerifiedDecision($this->configuration, $this->helper),
-            new DoReplaceDecision($this->configuration, $this->helper, $this->io),
+            new DoReplaceDecision($this->configuration, $this->helper),
         ];
     }
 }

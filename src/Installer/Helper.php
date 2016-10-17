@@ -1,10 +1,16 @@
 <?php
 
-namespace Tooly\Composer\Installer;
+namespace ToolInstaller\Composer\Installer;
 
-use Tooly\Composer\Installer\Helper\Downloader;
-use Tooly\Composer\Installer\Helper\Filesystem;
-use Tooly\Composer\Installer\Helper\Verifier;
+use Composer\IO\ConsoleIO;
+use Symfony\Component\Console\Helper\HelperSet;
+use Symfony\Component\Console\Helper\QuestionHelper;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use ToolInstaller\Composer\Installer\Helper\Downloader;
+use ToolInstaller\Composer\Installer\Helper\Filesystem;
+use ToolInstaller\Composer\Installer\Helper\Verifier;
 use TM\GPG\Verification\Verifier as GpgVerifier;
 
 class Helper
@@ -24,6 +30,8 @@ class Helper
      */
     private $filesystem;
 
+    private $io;
+
     /**
      * @return Downloader
      */
@@ -42,10 +50,19 @@ class Helper
     public function getFilesystem()
     {
         if (!$this->filesystem instanceof Filesystem) {
-            $this->downloader = new Filesystem;
+            $this->filesystem = new Filesystem;
         }
 
         return $this->filesystem;
+    }
+
+    public function getIO()
+    {
+        if (!$this->io instanceof ConsoleIO) {
+            $this->io = new ConsoleIO(new ArgvInput, new ConsoleOutput, new HelperSet([new QuestionHelper]));
+        }
+
+        return $this->io;
     }
 
     /**

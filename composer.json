@@ -1,12 +1,12 @@
 {
-    "name": "tooly/composer-plugin",
+    "name": "tm/composer-tool-installer-plugin",
     "type": "composer-plugin",
     "description": "An awesome description.",
     "keywords": [
         "key",
         "word"
     ],
-    "homepage": "https://github.com/tommy-muehle/new-project",
+    "homepage": "https://github.com/tommy-muehle/composer-tool-installer-plugin",
     "authors": [
         {
             "name": "Tommy Muehle",
@@ -16,20 +16,20 @@
     ],
     "support": {
         "email": "tommy.muehle@gmail.com",
-        "issues": "https://github.com/tommy-muehle/new-project/issues",
-        "docs": "https://github.com/tommy-muehle/new-project/blob/master/README.md",
-        "source": "https://github.com/tommy-muehle/new-project/tree/master"
+        "issues": "https://github.com/tommy-muehle/composer-tool-installer-plugin/issues",
+        "docs": "https://github.com/tommy-muehle/composer-tool-installer-plugin/blob/master/README.md",
+        "source": "https://github.com/tommy-muehle/composer-tool-installer-plugin/tree/master"
     },
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Tooly\\Composer\\": "src/"
+            "ToolInstaller\\Composer\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tooly\\Composer\\": "src/",
-            "Tooly\\Composer\\Tests\\": "tests/"
+            "ToolInstaller\\Composer\\": "src/",
+            "ToolInstaller\\Composer\\Tests\\": "tests/"
         }
     },
     "require": {
@@ -40,7 +40,7 @@
         "composer/composer": "^1.0"
     },
     "extra": {
-        "class": "Tooly\\Composer\\Plugin",
+        "class": "ToolInstaller\\Composer\\Plugin",
         "tools": [
         ]
     }

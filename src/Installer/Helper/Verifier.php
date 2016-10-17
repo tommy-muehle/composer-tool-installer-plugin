@@ -1,7 +1,6 @@
-
 <?php
 
-namespace Tooly\Composer\Installer\Helper;
+namespace ToolInstaller\Composer\Installer\Helper;
 
 use TM\GPG\Verification\Verifier as GPGVerifier;
 use TM\GPG\Verification\Exception\VerificationException;

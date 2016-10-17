@@ -1,42 +1,36 @@
 <?php
 
-namespace Tooly\Composer\Installer;
+namespace ToolInstaller\Composer\Installer;
 
 use Composer\Composer;
-use Tooly\Composer\Model\Tool;
+use ToolInstaller\Composer\Defaults;
+use ToolInstaller\Composer\Model\Tool;
 
 class Configuration
 {
     /**
      * @var array
      */
-    private $data = [];
-
-    /**
-     * @var string
-     */
-    private $binDirectory;
-
-    /**
-     * @var string
-     */
-    private $composerBinDirectory;
+    private $configuration = [
+        'bin-directory' => __DIR__ . '/../../bin',
+        'interactive-mode' => Defaults::INTERACTIVE_MODE,
+        'dev-mode' => Defaults::DEV_MODE,
+        'composer-bin-directory' => null,
+        'tools' => [],
+    ];
 
     /**
      * @param Composer $composer
-     * @param Mode     $mode
      */
-    public function __construct(Composer $composer, Mode $mode)
+    public function __construct(Composer $composer)
     {
         $extras = $composer->getPackage()->getExtra();
 
         if (true === array_key_exists('tools', $extras)) {
-            $this->data = array_merge([], $extras['tools']);
+            $this->configuration['tools'] = array_merge($this->configuration['tools'], $extras['tools']);
         }
 
-        $this->mode = $mode;
-        $this->binDirectory = realpath(__DIR__ . '/../../bin');
-        $this->composerBinDirectory = $composer->getConfig()->get('bin-dir');
+        $this->configuration['composer-bin-directory'] = $composer->getConfig()->get('bin-dir');
     }
 
     /**
@@ -44,7 +38,23 @@ class Configuration
      */
     public function isDevMode()
     {
-        return $this->mode->isDev();
+        return $this->configuration['dev-mode'];
+    }
+
+    /**
+     * Set flag for composer dev-mode to false.
+     */
+    public function setNoDev()
+    {
+        $this->configuration['dev-mode'] = false;
+    }
+
+    /**
+     * Set flag for CLI interaction to false.
+     */
+    public function setNonInteractive()
+    {
+        $this->configuration['interactive-mode'] = false;
     }
 
     /**
@@ -52,7 +62,7 @@ class Configuration
      */
     public function isInteractiveMode()
     {
-        return $this->mode->isInteractive();
+        return $this->configuration['interactive-mode'];
     }
 
     /**
@@ -60,7 +70,7 @@ class Configuration
      */
     public function getBinDirectory()
     {
-        return $this->binDirectory;
+        return $this->configuration['bin-directory'];
     }
 
     /**
@@ -68,7 +78,7 @@ class Configuration
      */
     public function getComposerBinDirectory()
     {
-        return $this->composerBinDirectory;
+        return $this->configuration['composer-bin-directory'];
     }
 
     /**
@@ -78,8 +88,8 @@ class Configuration
     {
         $tools = [];
 
-        foreach ($this->data as $name => $parameters) {
-            $tools[] = $this->createTool($name, $this->binDirectory, $parameters);
+        foreach ($this->configuration['tools'] as $name => $parameters) {
+            $tools[] = $this->createTool($name, $parameters);
         }
 
         return $tools;
@@ -87,12 +97,11 @@ class Configuration
 
     /**
      * @param string $name
-     * @param string $directory
      * @param array  $parameters
      *
      * @return Tool
      */
-    private function createTool($name, $directory, array $parameters)
+    private function createTool($name, array $parameters)
     {
         $defaults = [
             'url' => null,
@@ -105,7 +114,7 @@ class Configuration
 
         $tool = new Tool(
             $name,
-            $this->getFilename($name, $directory),
+            $this->configuration['bin-directory'] . DIRECTORY_SEPARATOR . basename($parameters['url']),
             $parameters['url'],
             $parameters['sign-url']
         );
@@ -119,19 +128,5 @@ class Configuration
         }
 
         return $tool;
-    }
-
-    /**
-     * @param string $name
-     * @param string $directory
-     *
-     * @return string
-     */
-    private function getFilename($name, $directory)
-    {
-        $filename = rtrim($directory, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-        $filename .= str_replace('.phar', '', $name) . '.phar';
-
-        return $filename;
     }
 }

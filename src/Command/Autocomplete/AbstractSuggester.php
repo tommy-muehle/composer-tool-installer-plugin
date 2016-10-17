@@ -1,6 +1,6 @@
 <?php
 
-namespace Tooly\Composer\Generator\Autocomplete;
+namespace ToolInstaller\Composer\Command\Autocomplete;
 
 abstract class AbstractSuggester implements SuggesterInterface
 {

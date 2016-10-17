@@ -1,11 +1,11 @@
 <?php
 
-namespace Tooly\Composer\Installer\Helper;
+namespace ToolInstaller\Composer\Installer\Helper;
 
 use Composer\Util\StreamContextFactory;
 
 /**
- * @package Tooly\Script\Helper
+ * @package ToolInstaller\Script\Helper
  */
 class Downloader
 {

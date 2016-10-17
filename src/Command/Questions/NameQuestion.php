@@ -1,20 +1,29 @@
 <?php
 
-namespace Tooly\Composer\Generator\Questions;
+namespace ToolInstaller\Composer\Command\Questions;
 
-use Tooly\Composer\Generator\Autocomplete\NameSuggester;
+use ToolInstaller\Composer\Command\Autocomplete\NameSuggester;
 
 class NameQuestion extends AbstractQuestion
 {
+    /**
+     * @var NameSuggester
+     */
     private $suggester;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct()
     {
         $this->suggester = new NameSuggester;
 
-        parent::__construct('Name:');
+        parent::__construct('Name of tool (such as phpunit or behat) to install: ');
     }
 
+    /**
+     * @return array
+     */
     public function getAutocompleterValues()
     {
         $defaults = [
@@ -22,9 +31,12 @@ class NameQuestion extends AbstractQuestion
             'security-checker'
         ];
 
-        return array_merge($defaults, $this->suggester->all());
+        return array_merge($defaults, $this->getSuggester()->all());
     }
 
+    /**
+     * @return NameSuggester
+     */
     protected function getSuggester()
     {
         return $this->suggester;

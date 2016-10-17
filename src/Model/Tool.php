@@ -1,6 +1,6 @@
 <?php
 
-namespace Tooly\Composer\Model;
+namespace ToolInstaller\Composer\Model;
 
 class Tool
 {

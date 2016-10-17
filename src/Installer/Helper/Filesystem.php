@@ -1,13 +1,10 @@
 <?php
 
-namespace Tooly\Composer\Installer\Helper;
+namespace ToolInstaller\Composer\Installer\Helper;
 
 use Composer\Util\Filesystem as ComposerFileSystem;
 use Composer\Util\Silencer;
 
-/**
- * @package Tooly\Script\Helper
- */
 class Filesystem
 {
     /**
@@ -90,6 +87,27 @@ class Filesystem
     public function remove($file)
     {
         return Silencer::call('unlink', $file);
+    }
+
+    /**
+     * @param string $dir
+     * @param array  $excludeNames
+     */
+    public function removeFromDir($dir, array $excludeNames = [])
+    {
+        foreach (scandir($dir) as $entry) {
+            $path = $dir . DIRECTORY_SEPARATOR . $entry;
+
+            if ($path === '.' || $path === '..') {
+                continue;
+            }
+
+            if (true === in_array(basename($entry), $excludeNames)) {
+                continue;
+            }
+
+            $this->remove($path);
+        }
     }
 
     /**

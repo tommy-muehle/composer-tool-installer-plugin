@@ -1,11 +1,11 @@
 <?php
 
-namespace Tooly\Composer\Installer\Decision;
+namespace ToolInstaller\Composer\Installer\Decision;
 
-use Tooly\Composer\Model\Tool;
+use ToolInstaller\Composer\Model\Tool;
 
 /**
- * @package Tooly\Script\Decision
+ * @package ToolInstaller\Script\Decision
  */
 class FileAlreadyExistDecision extends AbstractDecision
 {
