@@ -59,7 +59,7 @@ class Plugin implements PluginInterface, Capable, EventSubscriberInterface, Comm
     /**
      * @param Event $event
      */
-    public function install(Event $event)
+    public static function install(Event $event)
     {
         $installer = new Installer($event);
         $installer
