@@ -1,17 +1,26 @@
 {
     "name": "tm/composer-tool-installer-plugin",
     "type": "composer-plugin",
-    "description": "An awesome description.",
+    "description": "composer plugin to manage needed tools, such as PHPUnit or PhantomJS.",
     "keywords": [
-        "key",
-        "word"
+        "composer",
+        "composer-installer",
+        "composer-plugin",
+        "phar-management",
+        "composer-phar",
+        "phar",
+        "phar-handling",
+        "tool-handling",
+        "tool-management",
+        "installer",
+        "gpg-verification"
     ],
     "homepage": "https://github.com/tommy-muehle/composer-tool-installer-plugin",
     "authors": [
         {
             "name": "Tommy Muehle",
             "email": "tommy.muehle@gmail.com",
-            "homepage": "https://tommy-muehle.de"
+            "homepage": "https://tommy-muehle.io"
         }
     ],
     "support": {
@@ -39,9 +48,34 @@
     "require-dev": {
         "composer/composer": "^1.0"
     },
+    "suggest": {
+        "tm/gpg-verifier": "Allows verification over GPG for tools."
+    },
+    "scripts": {
+        "post-install-cmd": "ToolInstaller\\Composer\\Plugin::install",
+        "post-update-cmd": "ToolInstaller\\Composer\\Plugin::install"
+    },
     "extra": {
         "class": "ToolInstaller\\Composer\\Plugin",
-        "tools": [
-        ]
+        "tools": {
+            "phpunit": {
+                "url": "https://phar.phpunit.de/phpunit-5.5.0.phar"
+            },
+            "phpcpd": {
+                "url": "https://phar.phpunit.de/phpcpd-2.0.4.phar"
+            },
+            "phpcs": {
+                "url": "https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar",
+                "force-replace": true
+            },
+            "phpmd": {
+                "url": "http://static.phpmd.org/php/latest/phpmd.phar",
+                "force-replace": true
+            },
+            "security-checker": {
+                "url": "http://get.sensiolabs.org/security-checker.phar",
+                "force-replace": true
+            }
+        }
     }
 }
