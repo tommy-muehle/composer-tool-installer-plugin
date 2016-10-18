@@ -1,9 +1,0 @@
-#!/usr/bin/env php
-<?php
-
-require_once __DIR__ . '/../../vendor/autoload.php';
-
-use Tooly\Composer\Tests\Application;
-
-$application = new Application;
-$application->run();
