@@ -19,7 +19,11 @@ class ShowCommand extends BaseCommand
     {
         $this
             ->setName('tool-installer:show')
-            ->setDescription('@todo');
+            ->setDescription('@todo')
+            ->setHelp(<<<EOT
+@todo The <info>tool-installer:show</info> command needs a description.</info>
+EOT
+            );
     }
 
     /**
@@ -35,7 +39,9 @@ class ShowCommand extends BaseCommand
         $composerDefinition = $json->read();
         $rows = [];
 
-        $io->title('Current configuration:');
+        if (!isset($composerDefinition['extra']['tools'])) {
+            $composerDefinition['extra']['tools'] = [];
+        }
 
         foreach ($composerDefinition['extra']['tools'] as $name => $parameters) {
             $onlyDev = (true === Defaults::DEV_MODE) ? 'yes' : 'no';
@@ -50,13 +56,14 @@ class ShowCommand extends BaseCommand
                 $forceReplace = (true === $parameters['force-replace']) ? 'yes' : 'no';
             }
 
-            if (isset($parameters['sign-url'])) {
+            if (isset($parameters['sign-url']) && !empty($parameters['sign-url'])) {
                 $signUrl = $parameters['sign-url'];
             }
 
             $rows[] = [$name, $parameters['url'], $signUrl, $onlyDev, $forceReplace];
         }
 
+        $io->title('Current configuration:');
         $io->table(['Tool', 'Url', 'Sign url', 'Only dev', 'Force replace'], $rows);
     }
 }

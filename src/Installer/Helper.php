@@ -30,6 +30,9 @@ class Helper
      */
     private $filesystem;
 
+    /**
+     * @var ConsoleIO
+     */
     private $io;
 
     /**
@@ -56,6 +59,9 @@ class Helper
         return $this->filesystem;
     }
 
+    /**
+     * @return ConsoleIO
+     */
     public function getIO()
     {
         if (!$this->io instanceof ConsoleIO) {

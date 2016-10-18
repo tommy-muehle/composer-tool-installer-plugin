@@ -21,7 +21,11 @@ class InstallCommand extends BaseCommand
     {
         $this
             ->setName('tool-installer:install')
-            ->setDescription('@todo');
+            ->setDescription('@todo')
+            ->setHelp(<<<EOT
+@todo The <info>tool-installer:install</info> command needs a description.</info>
+EOT
+            );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -57,6 +61,12 @@ class InstallCommand extends BaseCommand
         return 0;
     }
 
+    /**
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @return array
+     */
     private function askQuestions(InputInterface $input, OutputInterface $output)
     {
         $helper = new QuestionHelper;
