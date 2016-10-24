@@ -7,6 +7,7 @@ use ToolInstaller\Composer\Installer\Helper;
 use ToolInstaller\Composer\Installer\Configuration;
 use ToolInstaller\Composer\Installer\Decider;
 use ToolInstaller\Composer\Model\Tool;
+use ToolInstaller\Composer\Installer\Responder;
 
 class Installer
 {
@@ -16,9 +17,9 @@ class Installer
     private $helper;
 
     /**
-     * @var \Composer\IO\IOInterface
+     * @var Responder
      */
-    private $io;
+    private $responder;
 
     /**
      * @var Decider
@@ -35,8 +36,8 @@ class Installer
      */
     public function __construct(Event $event)
     {
-        $configuration = new Configuration($event->getComposer());
         $io = $event->getIO();
+        $configuration = new Configuration($event->getComposer());
 
         if (false === $event->isDevMode()) {
             $configuration->setNoDev();
@@ -47,9 +48,14 @@ class Installer
         }
 
         $this->configuration  = $configuration;
-        $this->io = $io;
         $this->helper = new Helper;
+        $this->responder = new Responder($io);
         $this->decider = new Decider($this->configuration, $this->helper);
+
+        $this->responder->addTitle('Tool-Installer');
+        $this->responder->addNote(
+            'Please report any problems or feature-requests on: https://github.com/tommy-muehle/composer-tool-installer-plugin'
+        );
     }
 
     /**
@@ -88,19 +94,19 @@ class Installer
     {
         /* @var $tool Tool */
         foreach ($this->configuration->getTools() as $tool) {
-            $this->io->write(sprintf('<comment>Process tool "%s" ...</comment>', $tool->getName()));
+            $this->responder->addSection(sprintf('Install "%s" from "%s" ...', $tool->getName(), $tool->getUrl()));
             $result = $this->decider->canInstall($tool);
 
             if (false === $result->isSuccessful()) {
-                $this->io->write($result->getReason());
+                $this->throwReason($result->getReason());
                 continue;
             }
 
-            $data = $this->helper->getDownloader()->download($tool->getUrl());
-            $filename = $tool->getFilename();
+            $this->downloadFile($tool->getUrl(), $tool->getFilename());
 
-            $this->helper->getFilesystem()->createFile($filename, $data);
-            $this->io->write(sprintf('<info>File "%s" successfully downloaded!</info>', basename($filename)));
+            if (true === $tool->hasKeyFile()) {
+                $this->downloadFile($tool->getKeyUrl(), $tool->getKeyFilename());
+            }
         }
 
         return $this;
@@ -114,17 +120,39 @@ class Installer
         /* @var $tool Tool */
         foreach ($this->configuration->getTools() as $tool) {
             if (true === $tool->isOnlyDev() && false === $this->configuration->isDevMode()) {
-                return;
+                return $this;
             }
 
-            $filename = $tool->getFilename();
-
-            $composerDir = $this->configuration->getComposerBinDirectory();
-            $composerPath = $composerDir . DIRECTORY_SEPARATOR . basename($filename);
-
-            $this->helper->getFilesystem()->symlinkFile($filename, $composerPath);
+            $this->helper->getFilesystem()->symlinkFile(
+                $this->configuration->getBinDirectory() . DIRECTORY_SEPARATOR . $tool->getFilename(),
+                $this->configuration->getComposerBinDirectory(). DIRECTORY_SEPARATOR . $tool->getFilename()
+            );
         }
 
         return $this;
+    }
+
+    /**
+     * @param string $url
+     * @param string $file
+     */
+    private function downloadFile($url, $file)
+    {
+        $data = $this->helper->getDownloader()->download($url);
+        $filename = $this->configuration->getBinDirectory() . DIRECTORY_SEPARATOR . $file;
+
+        $this->helper->getFilesystem()->createFile($filename, $data);
+        $this->responder->addMessage(sprintf('File "%s" successfully downloaded!', basename($filename)), 'success');
+    }
+
+    /**
+     * @param string $message
+     */
+    private function throwReason($message)
+    {
+        preg_match('/<(.*?)>/', $message, $matches);
+        $message = preg_replace('/<(.*?)>/', '', $message);
+
+        $this->responder->addMessage($message, $matches[1]);
     }
 }
