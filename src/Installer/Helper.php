@@ -132,4 +132,15 @@ class Helper
 
         return $result;
     }
+
+    /**
+     * @param string $directory
+     * @param string $file
+     *
+     * @return string
+     */
+    public function getAbsolutePathToFile($directory, $file)
+    {
+        return realpath($directory . DIRECTORY_SEPARATOR . $file);
+    }
 }
