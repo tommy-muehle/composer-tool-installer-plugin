@@ -65,7 +65,8 @@ class Plugin implements PluginInterface, Capable, EventSubscriberInterface, Comm
         $installer
             ->prepare()
             ->cleanUp()
-            ->download()
+            ->download();
+        $installer
             ->symlink();
     }
 }
