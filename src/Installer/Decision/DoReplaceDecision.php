@@ -2,10 +2,10 @@
 
 namespace ToolInstaller\Composer\Installer\Decision;
 
-use Composer\IO\IOInterface;
-use ToolInstaller\Composer\Model\Tool;
+use Composer\IO\ConsoleIO;
 use ToolInstaller\Composer\Installer\Configuration;
 use ToolInstaller\Composer\Installer\Helper;
+use ToolInstaller\Composer\Model\Tool;
 
 /**
  * @package ToolInstaller\Script\Decision
@@ -13,7 +13,7 @@ use ToolInstaller\Composer\Installer\Helper;
 class DoReplaceDecision extends AbstractDecision
 {
     /**
-     * @var IOInterface
+     * @var ConsoleIO
      */
     private $io;
 
@@ -35,20 +35,22 @@ class DoReplaceDecision extends AbstractDecision
      */
     public function canProceed(Tool $tool)
     {
-        if (false === $this->helper->getFilesystem()->isFileAlreadyExist($tool->getFilename())) {
+        $filename = $this->helper->getAbsolutePathToFile(
+            $this->configuration->getBinDirectory(),
+            $tool->getFilename()
+        );
+
+        if (false === $this->helper->getFilesystem()->isFileAlreadyExist($filename)) {
             return true;
         }
 
         $doReplace = $tool->forceReplace();
 
         if (true === $this->configuration->isInteractiveMode()) {
-            $this->io->write('<comment>Checksums are not equal!</comment>');
-            $this->io->write(sprintf(
-                '<comment>Do you want to overwrite the existing file "%s"?</comment>',
-                $tool->getName()
-            ));
+            $this->io->warning('Checksums are not equal!');
+            $this->io->warning(sprintf('Do you want to overwrite the existing file "%s"?', $tool->getFilename()));
 
-            $doReplace = $this->io->askConfirmation('<question>[yes] or [no]?</question>', false);
+            $doReplace = $this->io->askConfirmation('[yes] or [no]?', false);
         }
 
         return $doReplace;
@@ -59,6 +61,6 @@ class DoReplaceDecision extends AbstractDecision
      */
     public function getReason()
     {
-        return '<info>No replace selected. Skipped.</info>';
+        return '<success>No replace selected. Skipped.</success>';
     }
 }

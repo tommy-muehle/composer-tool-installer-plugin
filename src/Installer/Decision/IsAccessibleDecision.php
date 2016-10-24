@@ -10,6 +10,11 @@ use ToolInstaller\Composer\Model\Tool;
 class IsAccessibleDecision extends AbstractDecision
 {
     /**
+     * @var string
+     */
+    private $notAccessibleUrl;
+
+    /**
      * @param Tool $tool
      *
      * @return bool
@@ -17,6 +22,7 @@ class IsAccessibleDecision extends AbstractDecision
     public function canProceed(Tool $tool)
     {
         if (false === $this->helper->getDownloader()->isAccessible($tool->getUrl())) {
+            $this->notAccessibleUrl = $tool->getUrl();
             return false;
         }
 
@@ -25,6 +31,16 @@ class IsAccessibleDecision extends AbstractDecision
         }
 
         if (false === $this->helper->getDownloader()->isAccessible($tool->getSignUrl())) {
+            $this->notAccessibleUrl = $tool->getSignUrl();
+            return false;
+        }
+
+        if (empty($tool->getKeyUrl())) {
+            return true;
+        }
+
+        if (false === $this->helper->getDownloader()->isAccessible($tool->getKeyUrl())) {
+            $this->notAccessibleUrl = $tool->getKeyUrl();
             return false;
         }
 
@@ -36,6 +52,6 @@ class IsAccessibleDecision extends AbstractDecision
      */
     public function getReason()
     {
-        return '<error>At least one given URL are not accessible!</error>';
+        return sprintf('<error>At least the URL "%s" are not accessible!</error>', $this->notAccessibleUrl);
     }
 }

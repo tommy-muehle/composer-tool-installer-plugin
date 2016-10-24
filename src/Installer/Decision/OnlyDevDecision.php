@@ -28,6 +28,6 @@ class OnlyDevDecision extends AbstractDecision
      */
     public function getReason()
     {
-        return '<comment>... skipped! Only installed in Dev mode.</comment>';
+        return '<warning>... skipped! Only installed in Dev mode.</warning>';
     }
 }

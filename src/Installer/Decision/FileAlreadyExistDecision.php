@@ -16,7 +16,12 @@ class FileAlreadyExistDecision extends AbstractDecision
      */
     public function canProceed(Tool $tool)
     {
-        if (false === $this->helper->isFileAlreadyExist($tool->getFilename(), $tool->getUrl())) {
+        $filename = $this->helper->getAbsolutePathToFile(
+            $this->configuration->getBinDirectory(),
+            $tool->getFilename()
+        );
+
+        if (false === $this->helper->isFileAlreadyExist($filename, $tool->getUrl())) {
             return true;
         }
 
@@ -28,6 +33,6 @@ class FileAlreadyExistDecision extends AbstractDecision
      */
     public function getReason()
     {
-        return '<info>File already exists in the given version.</info>';
+        return '<success>File already exists in the given version.</success>';
     }
 }

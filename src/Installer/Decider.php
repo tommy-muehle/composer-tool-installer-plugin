@@ -2,7 +2,6 @@
 
 namespace ToolInstaller\Composer\Installer;
 
-use Composer\IO\IOInterface;
 use ToolInstaller\Composer\Installer\Decision\DoReplaceDecision;
 use ToolInstaller\Composer\Installer\Decision\FileAlreadyExistDecision;
 use ToolInstaller\Composer\Installer\Decision\IsAccessibleDecision;
