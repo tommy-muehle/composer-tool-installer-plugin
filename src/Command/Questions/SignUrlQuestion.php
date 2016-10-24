@@ -3,7 +3,6 @@
 namespace ToolInstaller\Composer\Command\Questions;
 
 use ToolInstaller\Composer\Command\Autocomplete\SignUrlSuggester;
-use ToolInstaller\Composer\Command\Autocomplete\UrlSuggester;
 
 class SignUrlQuestion extends AbstractQuestion
 {
@@ -19,7 +18,7 @@ class SignUrlQuestion extends AbstractQuestion
     {
         $this->suggester = new SignUrlSuggester;
 
-        parent::__construct('Sign url (default: none): ', '');
+        parent::__construct('Sign url (default: none, example: https://tool.phar.asc): ', '');
     }
 
     /**

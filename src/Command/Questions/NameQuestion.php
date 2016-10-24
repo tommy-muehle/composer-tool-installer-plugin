@@ -18,7 +18,7 @@ class NameQuestion extends AbstractQuestion
     {
         $this->suggester = new NameSuggester;
 
-        parent::__construct('Name of tool (such as phpunit or behat) to install: ');
+        parent::__construct('Name of tool/binary to install (example: phpunit): ');
     }
 
     /**
