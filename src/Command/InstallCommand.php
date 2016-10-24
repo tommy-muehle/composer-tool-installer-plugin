@@ -10,6 +10,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use ToolInstaller\Composer\Command\Questions\ForceReplaceQuestion;
+use ToolInstaller\Composer\Command\Questions\KeyUrlQuestion;
 use ToolInstaller\Composer\Command\Questions\NameQuestion;
 use ToolInstaller\Composer\Command\Questions\OnlyDevQuestion;
 use ToolInstaller\Composer\Command\Questions\SignUrlQuestion;
@@ -50,6 +51,7 @@ EOT
 
         $composerDefinition['extra']['tools'][$tool['name']] = [
             'url' => $tool['url'],
+            'key-url' => $tool['key-url'],
             'sign-url' => $tool['sign-url'],
             'only-dev' => $tool['only-dev'],
             'force-replace' => $tool['force-replace'],
@@ -74,16 +76,19 @@ EOT
         $nameQuestion = new NameQuestion;
         $urlQuestion = new UrlQuestion;
         $signUrlQuestion = new SignUrlQuestion;
+        $keyUrlQuestion = new KeyUrlQuestion;
 
         $tool = [];
         $tool['name'] = $helper->ask($input, $output, $nameQuestion);
         $tool['url'] = $helper->ask($input, $output, $urlQuestion);
+        $tool['key-url'] = $helper->ask($input, $output, $keyUrlQuestion);
         $tool['sign-url'] = $helper->ask($input, $output, $signUrlQuestion);
         $tool['force-replace'] = $helper->ask($input, $output, new ForceReplaceQuestion);
         $tool['only-dev'] = $helper->ask($input, $output, new OnlyDevQuestion);
 
         $nameQuestion->saveAutocompleterValues($tool['name']);
         $urlQuestion->saveAutocompleterValues($tool['url']);
+        $keyUrlQuestion->saveAutocompleterValues($tool['key-url']);
 
         if (!empty($signUrl)) {
             $signUrlQuestion->saveAutocompleterValues($tool['sign-url']);

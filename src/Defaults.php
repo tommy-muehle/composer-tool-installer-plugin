@@ -12,4 +12,5 @@ final class Defaults
     const AUTOCOMPLETE_NAME_FILE = '.autocomplete_names';
     const AUTOCOMPLETE_URL_FILE = '.autocomplete_urls';
     const AUTOCOMPLETE_SIGN_URL_FILE = '.autocomplete_sign_urls';
+    const AUTOCOMPLETE_KEY_URL_FILE = '.autocomplete_key_urls';
 }

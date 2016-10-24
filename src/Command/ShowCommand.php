@@ -47,6 +47,7 @@ EOT
             $onlyDev = (true === Defaults::DEV_MODE) ? 'yes' : 'no';
             $forceReplace = (true === Defaults::FORCE_REPLACE) ? 'yes' : 'no';
             $signUrl = '-';
+            $keyUrl = '-';
 
             if (isset($parameters['only-dev'])) {
                 $onlyDev = (true === $parameters['only-dev']) ? 'yes' : 'no';
@@ -60,10 +61,14 @@ EOT
                 $signUrl = $parameters['sign-url'];
             }
 
-            $rows[] = [$name, $parameters['url'], $signUrl, $onlyDev, $forceReplace];
+            if (isset($parameters['key-url']) && !empty($parameters['key-url'])) {
+                $signUrl = $parameters['key-url'];
+            }
+
+            $rows[] = [$name, $parameters['url'], $keyUrl, $signUrl, $onlyDev, $forceReplace];
         }
 
         $io->title('Current configuration:');
-        $io->table(['Tool', 'Url', 'Sign url', 'Only dev', 'Force replace'], $rows);
+        $io->table(['Tool', 'Url', 'Key url', 'Sign url', 'Only dev', 'Force replace'], $rows);
     }
 }

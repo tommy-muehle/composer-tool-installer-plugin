@@ -25,6 +25,11 @@ class Tool
     private $signUrl;
 
     /**
+     * @var string
+     */
+    private $keyUrl;
+
+    /**
      * @var bool
      */
     private $forceReplace = false;
@@ -36,18 +41,18 @@ class Tool
 
     /**
      * @param string $name
-     * @param string $filename
      * @param string $url
      * @param string $signUrl
+     * @param string $keyUrl
      *
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
-    public function __construct($name, $filename, $url, $signUrl = null)
+    public function __construct($name, $url, $signUrl = null, $keyUrl = null)
     {
         $this->name = $name;
-        $this->filename = $filename;
         $this->url = $url;
         $this->signUrl = $signUrl;
+        $this->keyUrl = $keyUrl;
     }
 
     /**
@@ -67,6 +72,14 @@ class Tool
     }
 
     /**
+     * @return bool
+     */
+    public function hasKeyFile()
+    {
+        return isset($this->keyUrl);
+    }
+
+    /**
      * @return string
      */
     public function getName()
@@ -79,7 +92,19 @@ class Tool
      */
     public function getFilename()
     {
-        return $this->filename;
+        return basename($this->url);
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getKeyFilename()
+    {
+        if (true === $this->hasKeyFile()) {
+            return basename($this->keyUrl);
+        }
+
+        return null;
     }
 
     /**
@@ -96,6 +121,14 @@ class Tool
     public function getSignUrl()
     {
         return $this->signUrl;
+    }
+
+    /**
+     * @return string
+     */
+    public function getKeyUrl()
+    {
+        return $this->keyUrl;
     }
 
     /**
