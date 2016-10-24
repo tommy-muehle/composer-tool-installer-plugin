@@ -1,59 +1,54 @@
+> Welcome! [Introduction for BETA testers](https://github.com/tommy-muehle/composer-tool-installer-plugin/wiki/Introduction-for-BETA-testers)
+
 =======
+
 # composer-tool-installer-plugin
 
-## Introduction for Beta testers
+> Install project requirements with composer
 
-### Please add this parts to one or several projects composer.json file(s).
+This plugin is the right choice if your composer-project requires some extra binaries (own Go-Lang binaries) or an 
+special toolset for testing (such as PHPUnit, PhantomJS) or some tools for QA control (such as phpmd, security-checker, ...).
+
+With this plugin you can manage all these things in your composer.json file. Team-transcending and optional with GPG signature or 
+Pub-Key verification for each tool.
+
+> This plugin is heavily inspired on [tooly-composer-script](https://github.com/tommy-muehle/tooly-composer-script) - PHAR management with composer
+
+## Requirements
+
+* PHP >= 5.6
+* composer
+
+## Install
 
 ```
-...
-"repositories": [
-    {
-        "type": "vcs",
-        "url": "https://github.com/tommy-muehle/composer-tool-installer-plugin"
-    }
-],
-...
-"require-dev": {
-    ...
-    "tm/composer-tool-installer-plugin": "dev-master"
-    ...
-}
+composer require tm/composer-tool-installer-plugin ^1.0
 ```
 
-### Play with the plugin
+## Usage
 
-To add a new tool simple run:
+To add a requirement (tool or binary) you can add this manually to the composer.json file or you can use the composer CLI.
+Every time you use the command the given values are saved, in the composer cache directory, and are proposed on the next time.
 
 ```
 composer tool-installer:install
 ```
 
-To show current tool configuration you can run:
+If you want to see the current configuration simply run: 
 
 ```
 composer tool-installer:show
 ```
 
-## Example configurations
+## Configuration
 
-Instead of use the composer CLI you can also add the configuration directly to composer.json file. 
+You can find a sample configuration [here](). The complete configuration options are described in the [wiki]().
 
-```
-...
-"extra": {
-        "tools": {
-            "phpunit": {
-                "url": "https://phar.phpunit.de/phpunit-5.6.1.phar",
-                "only-dev": true,
-                "force-replace": false
-            },
-            "phantomjs": {
-                "url": "path/to/phantomjs.bin",
-                "only-dev": true,
-                "force-replace": true
-            }
-        }
-    }
-...
-```
+### Examples
+
+* [PHPUnit]() with GPG verification
+* [humhub] with Key-Verification
+
+## Contribution
+
+Please refer to [CONTRIBUTING.md](CONTRIBUTING.md) for information on how to contribute.
