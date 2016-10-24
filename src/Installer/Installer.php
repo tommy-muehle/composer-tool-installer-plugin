@@ -123,10 +123,21 @@ class Installer
                 return $this;
             }
 
-            $this->helper->getFilesystem()->symlinkFile(
-                $this->configuration->getBinDirectory() . DIRECTORY_SEPARATOR . $tool->getFilename(),
-                $this->configuration->getComposerBinDirectory(). DIRECTORY_SEPARATOR . $tool->getFilename()
+            $filename = $this->helper->getAbsolutePathToFile(
+                $this->configuration->getBinDirectory(),
+                $tool->getFilename()
             );
+
+            if (false === $this->helper->getFilesystem()->isFileAlreadyExist($filename)) {
+                return $this;
+            }
+
+            $composerFilename = $this->helper->getAbsolutePathToFile(
+                $this->configuration->getComposerBinDirectory(),
+                $tool->getFilename()
+            );
+
+            $this->helper->getFilesystem()->symlinkFile($filename, $composerFilename);
         }
 
         return $this;
