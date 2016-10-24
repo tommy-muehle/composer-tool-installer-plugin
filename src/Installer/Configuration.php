@@ -106,6 +106,7 @@ class Configuration
         $defaults = [
             'url' => null,
             'sign-url' => null,
+            'key-url' => null,
             'only-dev' => true,
             'force-replace' => false,
         ];
@@ -114,9 +115,9 @@ class Configuration
 
         $tool = new Tool(
             $name,
-            $this->configuration['bin-directory'] . DIRECTORY_SEPARATOR . basename($parameters['url']),
             $parameters['url'],
-            $parameters['sign-url']
+            $parameters['sign-url'],
+            $parameters['key-url']
         );
 
         if (true === $parameters['force-replace']) {
