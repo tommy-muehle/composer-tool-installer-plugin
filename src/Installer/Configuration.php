@@ -70,7 +70,7 @@ class Configuration
      */
     public function getBinDirectory()
     {
-        return $this->configuration['bin-directory'];
+        return realpath($this->configuration['bin-directory']);
     }
 
     /**

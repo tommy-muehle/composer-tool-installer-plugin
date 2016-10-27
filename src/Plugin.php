@@ -5,6 +5,7 @@ namespace ToolInstaller\Composer;
 use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
+use Composer\Plugin\Capability\CommandProvider;
 use Composer\Plugin\Capable;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
@@ -30,7 +31,7 @@ class Plugin implements PluginInterface, Capable, EventSubscriberInterface, Comm
     public function getCapabilities()
     {
         return [
-            'Composer\Plugin\Capability\CommandProvider' => get_class($this)
+            CommandProvider::class => get_class($this)
         ];
     }
 

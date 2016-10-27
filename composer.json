@@ -46,7 +46,10 @@
         "composer-plugin-api": "^1.0"
     },
     "require-dev": {
-        "composer/composer": "^1.0"
+        "composer/composer": "^1.0",
+        "php-mock/php-mock-phpunit": "^1.0",
+        "mikey179/vfsstream": "^1.6",
+        "tm/gpg-verifier": "^1.0"
     },
     "suggest": {
         "tm/gpg-verifier": "Allows verification over GPG for tools."

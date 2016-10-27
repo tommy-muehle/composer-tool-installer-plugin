@@ -13,23 +13,16 @@ use ToolInstaller\Composer\Model\Tool;
 class Decider
 {
     /**
-     * @var Configuration
+     * @var array
      */
-    private $configuration;
+    private $decisions = [];
 
     /**
-     * @var Helper
+     * @param array $decisions
      */
-    private $helper;
-
-    /**
-     * @param Configuration $configuration
-     * @param Helper        $helper
-     */
-    public function __construct(Configuration $configuration, Helper $helper)
+    public function __construct(array $decisions)
     {
-        $this->configuration = $configuration;
-        $this->helper = $helper;
+        $this->decisions = $decisions;
     }
 
     /**
@@ -41,7 +34,7 @@ class Decider
     {
         $result = new Result;
 
-        foreach ($this->getDecisions() as $decision) {
+        foreach ($this->decisions as $decision) {
             if (true === $decision->canProceed($tool)) {
                 continue;
             }
@@ -53,21 +46,5 @@ class Decider
         }
 
         return $result;
-    }
-
-    /**
-     * Each decision can interrupt the download of a tool.
-     *
-     * @return array
-     */
-    private function getDecisions()
-    {
-        return [
-            new OnlyDevDecision($this->configuration, $this->helper),
-            new IsAccessibleDecision($this->configuration, $this->helper),
-            new FileAlreadyExistDecision($this->configuration, $this->helper),
-            new IsVerifiedDecision($this->configuration, $this->helper),
-            new DoReplaceDecision($this->configuration, $this->helper),
-        ];
     }
 }

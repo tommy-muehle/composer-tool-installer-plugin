@@ -3,6 +3,11 @@
 namespace ToolInstaller\Composer\Installer;
 
 use Composer\Script\Event;
+use ToolInstaller\Composer\Installer\Decision\DoReplaceDecision;
+use ToolInstaller\Composer\Installer\Decision\FileAlreadyExistDecision;
+use ToolInstaller\Composer\Installer\Decision\IsAccessibleDecision;
+use ToolInstaller\Composer\Installer\Decision\IsVerifiedDecision;
+use ToolInstaller\Composer\Installer\Decision\OnlyDevDecision;
 use ToolInstaller\Composer\Installer\Helper;
 use ToolInstaller\Composer\Installer\Configuration;
 use ToolInstaller\Composer\Installer\Decider;
@@ -50,7 +55,13 @@ class Installer
         $this->configuration  = $configuration;
         $this->helper = new Helper;
         $this->responder = new Responder($io);
-        $this->decider = new Decider($this->configuration, $this->helper);
+        $this->decider = new Decider([
+            new OnlyDevDecision($this->configuration, $this->helper),
+            new IsAccessibleDecision($this->configuration, $this->helper),
+            new FileAlreadyExistDecision($this->configuration, $this->helper),
+            new IsVerifiedDecision($this->configuration, $this->helper),
+            new DoReplaceDecision($this->configuration, $this->helper),
+        ]);
 
         $this->responder->addTitle('Tool-Installer');
         $this->responder->addNote(
