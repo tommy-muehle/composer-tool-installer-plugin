@@ -1,5 +1,3 @@
-> Welcome! [Introduction for BETA testers](https://github.com/tommy-muehle/composer-tool-installer-plugin/wiki/Introduction-for-BETA-testers)
-
 =======
 
 # composer-tool-installer-plugin
