@@ -74,6 +74,10 @@ class Installer
      */
     public function prepare()
     {
+        if (false === is_dir($this->configuration->getComposerBinDirectory())) {
+            mkdir($this->configuration->getComposerBinDirectory());
+        }
+
         if (false === is_dir($this->configuration->getBinDirectory())) {
             mkdir($this->configuration->getBinDirectory());
         }
